@@ -50,7 +50,7 @@ names (the coloring is optional):
 <table>
   <tr>
     <td>
-      <img src="http://i.imgur.com/2zzr1ts.png">
+      <img src="https://image.ibb.co/kFW30v/2017_05_31_23_01_10_Affinity_Designer.png">
     </td>
     <td>
       <ul>
