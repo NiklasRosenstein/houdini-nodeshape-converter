@@ -1,8 +1,6 @@
-# Houdini Nodeshape Converter
-
-Convert SVG paths to Houdini Nodeshape JSON files.
-
-<img align="center" src="http://i.imgur.com/ueuVCuL.jpg">
+<p align="center"><img src="http://i.imgur.com/3mRpJay.jpg"></p>
+<h1 align="center">Houdini Nodeshape Converter</h1>
+<p align="center">Convert SVG paths to Houdini JSON nodeshapes.</p>
 
 ## Installation
 
