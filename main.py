@@ -109,7 +109,6 @@ def main(ctx, svgfile, inputdim, name, cubic_samples):
   # Sample all paths.
   results = {}
   for node in paths:
-    name = node.getAttribute('id')
     path = svgpathtools.parse_path(node.getAttribute('d'))
     points = []
     for comp in path:
@@ -120,7 +119,7 @@ def main(ctx, svgfile, inputdim, name, cubic_samples):
       else:
         for x in np.linspace(0, 1, cubic_samples):
           points.append(comp.point(x))
-    results[name] = points
+    results[node.getAttribute('id')] = points
 
   # Convert the icon rectangle to a line for houdini.
   results['icon'] = get_icon_path(rects[0])
