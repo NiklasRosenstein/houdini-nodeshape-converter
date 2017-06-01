@@ -16,20 +16,25 @@
         <h1>Houdini Nodeshape Converter</h1>
         <p align="center"><img src="http://i.imgur.com/VWO2QFG.jpg"></p>
       </div>
+      {% if errmsg %}
+      <div class="col col-12">
+        <div class="message error">{{ errmsg }}</div>
+      </div>
+      {% endif %}
       <div class="col col-12">
         <form action="{{ url_for('houdini_nodeshape_converter.index') }}" method="post">
           <table>
             <tr>
               <td></td>
-              <td><input type="number" name="xres" placeholder="Input X Resolution"></td>
+              <td><input type="number" name="xres" placeholder="Input X Resolution" value="{{ request.form.get('xres', '') }}"></td>
             </tr>
             <tr>
               <td></td>
-              <td><input type="number" name="yres" placeholder="Input Y Resolution"></td>
+              <td><input type="number" name="yres" placeholder="Input Y Resolution" value="{{ request.form.get('yres', '') }}"></td>
             </tr>
             <tr>
               <td></td>
-              <td><textarea name="svgstring" placeholder="SVG String"></textarea></td>
+              <td><textarea name="svgstring" placeholder="SVG String">{{ request.form.get('svgstring', '') }}</textarea></td>
             </tr>
             <tr>
               <td><label for="svgfile">SVG File</label></td>
@@ -39,6 +44,12 @@
               <td></td>
               <td><input type="submit" name="submit"></td>
             </tr>
+            {% if shape_json %}
+            <tr>
+              <td><label>Result</label></td>
+              <td><textarea rows="10">{{ shape_json }}</textarea></td>
+            </tr>
+            {% endif %}
           </table>
         </form>
       </div>

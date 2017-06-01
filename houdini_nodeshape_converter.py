@@ -27,6 +27,8 @@ import svgpathtools
 import sys
 import xml.dom.minidom as minidom
 
+from xml.parsers.expat import ExpatError
+
 
 def cboundingbox(points):
   p = next(points)
@@ -50,6 +52,67 @@ def ctuples(points, third=None):
 def get_icon_path(rect):
   x, y, w, h = map(float, [rect.getAttribute(n) for n in 'x y width height'.split()])
   return [complex(x, y+h), complex(x+w, y)]
+
+
+def convert(fp, inputdim=None, name=None, cubic_samples=10):
+  doc = minidom.parse(fp)
+  paths = doc.getElementsByTagName('path')
+  rects = doc.getElementsByTagName('rect')
+  if len(paths) != 7:
+    ctx.fail('expected 7 <path/>, got {}'.format(len(paths)))
+  if len(rects) != 1:
+    ctx.fail('expected 1 <rect/>, got {}'.format(len(rects)))
+
+  # Sample all paths.
+  results = {}
+  for node in paths:
+    path = svgpathtools.parse_path(node.getAttribute('d'))
+    points = []
+    for comp in path:
+      # TODO: Skip duplicate start/end points.
+      if isinstance(comp, svgpathtools.Line):
+        points.append(comp.start)
+        points.append(comp.end)
+      else:
+        for x in np.linspace(0, 1, cubic_samples):
+          points.append(comp.point(x))
+    results[node.getAttribute('id')] = points
+
+  # Convert the icon rectangle to a line for houdini.
+  results['icon'] = get_icon_path(rects[0])
+
+  # If no input dimension is specified, determine the bounding box
+  # of the whole shape.
+  if not inputdim:
+    bbox = cboundingbox(itertools.chain(*results.values()))
+    inputdim = (bbox[1] - bbox[0], bbox[3] - bbox[2])
+    offset = complex(bbox[0], bbox[2])
+  else:
+    offset = 0+0j
+
+  # Determine the factor by which the paths need to be scaled in order
+  # to fit on a 1x1 tile.
+  scalar = 1.0 / (inputdim[0] if inputdim[0] > inputdim[1] else inputdim[1])
+
+  # Transform all to fit on a 1x1 tile.
+  for path in results.values():
+    path[:] = [(p - offset) * scalar for p in path]
+
+  # Generate the output JSON.
+  data = {
+    'name': name,
+    'flags': {
+      '0': { 'outline': ctuples(results['flag0']) },
+      '1': { 'outline': ctuples(results['flag1']) },
+      '2': { 'outline': ctuples(results['flag2']) },
+      '3': { 'outline': ctuples(results['flag3']) }
+    },
+    'outline': ctuples(results['outline']),
+    'inputs': ctuples(results['inputs'], 0.0),
+    'outputs': ctuples(results['outputs'], 0.0),
+    'icon': ctuples(results['icon'])
+  }
+  return json.dumps(data, indent=2, sort_keys=True)
 
 
 @click.command()
@@ -90,72 +153,14 @@ def main(ctx, svgfile, inputdim, name, cubic_samples):
 
   if inputdim:
     try:
-      w, h = map(int, inputdim.split('x'))
+      inputdim = map(int, inputdim.split('x'))
+      if len(inputdim) != 2:
+        raise ValueError
     except (IndexError, ValueError):
       ctx.fail('invalid INPUTDIM: {!r}'.format(inputdim))
-  else:
-    w, h = None, None
 
   with open(svgfile) as fp:
-    doc = minidom.parse(fp)
-
-  paths = doc.getElementsByTagName('path')
-  rects = doc.getElementsByTagName('rect')
-  if len(paths) != 7:
-    ctx.fail('expected 7 <path/>, got {}'.format(len(paths)))
-  if len(rects) != 1:
-    ctx.fail('expected 1 <rect/>, got {}'.format(len(rects)))
-
-  # Sample all paths.
-  results = {}
-  for node in paths:
-    path = svgpathtools.parse_path(node.getAttribute('d'))
-    points = []
-    for comp in path:
-      # TODO: Skip duplicate start/end points.
-      if isinstance(comp, svgpathtools.Line):
-        points.append(comp.start)
-        points.append(comp.end)
-      else:
-        for x in np.linspace(0, 1, cubic_samples):
-          points.append(comp.point(x))
-    results[node.getAttribute('id')] = points
-
-  # Convert the icon rectangle to a line for houdini.
-  results['icon'] = get_icon_path(rects[0])
-
-  # If no input dimension is specified, determine the bounding box
-  # of the whole shape.
-  if not inputdim:
-    bbox = cboundingbox(itertools.chain(*results.values()))
-    w, h = (bbox[1] - bbox[0], bbox[3] - bbox[2])
-    offset = complex(bbox[0], bbox[2])
-  else:
-    offset = 0+0j
-
-  # Determine the factor by which the paths need to be scaled in order
-  # to fit on a 1x1 tile.
-  scalar = 1.0 / (w if w > h else h)
-
-  # Transform all to fit on a 1x1 tile.
-  for path in results.values():
-    path[:] = [(p - offset) * scalar for p in path]
-
-  # Generate the output JSON.
-  data = {
-    'name': name,
-    'flags': {
-      '0': { 'outline': ctuples(results['flag0']) },
-      '1': { 'outline': ctuples(results['flag1']) },
-      '2': { 'outline': ctuples(results['flag2']) },
-      '3': { 'outline': ctuples(results['flag3']) }
-    },
-    'outline': ctuples(results['outline']),
-    'inputs': ctuples(results['inputs'], 0.0),
-    'outputs': ctuples(results['outputs'], 0.0),
-    'icon': ctuples(results['icon'])
-  }
-  json.dump(data, sys.stdout, indent=2, sort_keys=True)
+    print(convert(fp, inputdim, name, cubic_samples))
 
 
 if ('require' in globals() and require.main == module) or __name__ == '__main__':
