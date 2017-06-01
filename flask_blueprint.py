@@ -49,14 +49,10 @@ def index():
         inputdim = None
       name = request.form.get('name')
       svgstring = request.form.get('svgstring').strip()
-      svgfile = request.files.get('svgfile')
-      if bool(svgstring) == bool(svgfile):
-        raise ValueError('specify either SVG String or SVG File')
     except ValueError as exc:
       errmsg = str(exc)
     else:
-      if svgstring:
-        svgfile = io.StringIO(svgstring)
+      svgfile = io.StringIO(svgstring)
       try:
         json = houdini_nodeshape_converter.convert(svgfile, inputdim, name=name)
       except houdini_nodeshape_converter.ExpatError as exc:
@@ -69,5 +65,5 @@ def main():
   app.register_blueprint(bp)
   app.run(debug=True)
 
-if __name__ == '__main__':
+if ('require' in globals() and require.main == module) or __name__ == '__main__':
   main()
