@@ -1,4 +1,4 @@
-<p align="center"><img src="https://image.ibb.co/j1aD0v/showcase.jpg"></p>
+<p align="center"><img src="http://i.imgur.com/VWO2QFG.jpg"></p>
 <h1 align="center">Houdini Nodeshape Converter</h1>
 <p align="center">Convert SVG paths to Houdini JSON nodeshapes.</p>
 
