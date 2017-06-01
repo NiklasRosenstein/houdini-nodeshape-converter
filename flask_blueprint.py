@@ -57,7 +57,7 @@ def index():
       svgfile = io.StringIO(svgstring)
       try:
         json = houdini_nodeshape_converter.convert(svgfile, inputdim, name=name)
-      except houdini_nodeshape_converter.ExpatError as exc:
+      except Exception as exc:
         errmsg = str(exc)
   return flask.render_template('houdini-nodeshape-converter/index.html',
     errmsg=errmsg, shape_json=json)
