@@ -86,7 +86,3 @@ output into a JSON file and copy that into your Houdini Nodeshape folder.
     {
       "icon": [
         ...
-
-## Todo
-
-- Clever way to determine angle of inputs and outputs (currently set to 0)
