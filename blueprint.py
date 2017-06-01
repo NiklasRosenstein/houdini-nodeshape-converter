@@ -34,7 +34,8 @@ import {convert} from './convert'
 
 blueprint = flask.Blueprint(
   'houdini_nodeshape_converter', __name__,
-  template_folder=os.path.join(__directory__, 'templates')
+  template_folder=os.path.join(__directory__, 'templates'),
+  static_folder=os.path.join(__directory__, 'static')
 )
 
 
@@ -78,10 +79,10 @@ def create_shape(name, svgdata, xres=None, yres=None):
 
 
 class ConvertForm(FlaskForm):
-  name = StringField('Name')
+  name = StringField('Name*')
   xres = IntegerField('X Resolution', validators=[Optional()])
   yres = IntegerField('Y Resolution', validators=[Optional()])
-  svg_file = FileField('SVG File', validators=[FileRequired()])
+  svg_file = FileField('SVG File*', validators=[FileRequired()])
 
 
 @blueprint.route('/', methods=['GET', 'POST'])
