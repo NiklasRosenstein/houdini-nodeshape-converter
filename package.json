@@ -4,7 +4,7 @@
   "description": "SVG to Houdini Nodeshape JSON converter.",
   "author": "Niklas Rosenstein <rosensteinniklas@gmail.com>",
   "license": "MIT",
-  "main": "houdini_nodepath_converter.py",
+  "main": "houdini_nodeshape_converter.py",
   "bin": {
     "houdini-nodeshape-converter": "."
   },
