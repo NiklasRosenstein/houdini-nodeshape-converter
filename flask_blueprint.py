@@ -33,6 +33,9 @@ def index():
   json = None
   if request.method == 'POST':
     try:
+      name = request.form.get('name').strip()
+      if not name:
+        raise ValueError('no name specified')
       xres = request.form.get('xres')
       yres = request.form.get('yres')
       if xres or yres:
@@ -47,7 +50,6 @@ def index():
         inputdim = (xres, yres)
       else:
         inputdim = None
-      name = request.form.get('name')
       svgstring = request.form.get('svgstring').strip()
     except ValueError as exc:
       errmsg = str(exc)
