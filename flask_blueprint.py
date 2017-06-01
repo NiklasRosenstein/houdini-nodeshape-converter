@@ -22,9 +22,10 @@ from flask import request
 import flask
 import houdini_nodeshape_converter
 import io
+import os
 
 bp = flask.Blueprint('houdini_nodeshape_converter', __name__,
-  template_folder='flask_templates')
+  template_folder=os.path.join(os.path.dirname(__file__), 'flask_templates'))
 
 @bp.route('/', methods=['GET', 'POST'])
 def index():
