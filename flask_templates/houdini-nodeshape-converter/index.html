@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/kube/6.5.2/css/kube.min.css">
+    <style>
+      html {
+        padding: 1em;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="row">
+      <div class="col col-12">
+        <h1>Houdini Nodeshape Converter</h1>
+        <p align="center"><img src="http://i.imgur.com/VWO2QFG.jpg"></p>
+      </div>
+      <div class="col col-12">
+        <form action="{{ url_for('houdini_nodeshape_converter.index') }}" method="post">
+          <table>
+            <tr>
+              <td></td>
+              <td><input type="number" name="xres" placeholder="Input X Resolution"></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td><input type="number" name="yres" placeholder="Input Y Resolution"></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td><textarea name="svgstring" placeholder="SVG String"></textarea></td>
+            </tr>
+            <tr>
+              <td><label for="svgfile">SVG File</label></td>
+              <td><input type="file" name="svgfile"></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td><input type="submit" name="submit"></td>
+            </tr>
+          </table>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
