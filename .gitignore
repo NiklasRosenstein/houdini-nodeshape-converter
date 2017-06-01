@@ -1,1 +1,4 @@
+dist/
 nodepy_modules/
+venv/
+*.egg-info/

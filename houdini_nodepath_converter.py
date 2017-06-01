@@ -158,5 +158,5 @@ def main(ctx, svgfile, inputdim, name, cubic_samples):
   json.dump(data, sys.stdout, indent=2, sort_keys=True)
 
 
-if require.main == module:
+if ('require' in globals() and require.main == module) or __name__ == '__main__':
   main()
