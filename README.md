@@ -1,88 +1,34 @@
 <p align="center"><img src="http://i.imgur.com/VWO2QFG.jpg"></p>
-<h1 align="center">Houdini Nodeshape Converter</h1>
+<h1 align="center"><a href="https://stuff.niklasrosenstein.com/houdini-nodeshape-converter">Houdini NodeShape Converter</a></h1>
 <p align="center">Convert SVG paths to Houdini JSON nodeshapes.</p>
 
-## Installation
+  [0]: https://stuff.niklasrosenstein.com/houdini-nodeshape-converter
 
-Via Node.py and NPPM:
+## Creating a Houdini NodeShape
 
-    $ nppm install -g git+https://github.com/NiklasRosenstein/houdini-nodeshape-converter.git
+1. Use your favorite vector graphics application (eg. Affinity Designer, Adobe Illustrator, Inkscape)  
+   *Note: That application must support SVG export that preserves layer names and
+   absolute coordinates.*
 
-Via Pip:
+2. Create your shape and make sure the layer names are correct (see image below).
 
-    $ pip install git+https://github.com/NiklasRosenstein/houdini-nodeshape-converter.git
+   ![](https://image.ibb.co/kFW30v/2017_05_31_23_01_10_Affinity_Designer.png)
 
-## Synopsis
+3. Save the file in SVG format (eg. in "for web" mode which reduces the
+   complexity of the file and converts relative to absolute coordinates).
 
-```
-Usage: houdini-nodeshape-converter [OPTIONS] SVGFILE [INPUTDIM]
+4. Go to the [Houdini Nodeshape Converter][0] website and paste the content
+   of the exported SVG file and press "Convert". It will automatically download
+   the generated JSON file.
 
-  Houdini Nodeshape Converter -- Convert SVG paths to Houdini JSON
-  nodeshapes.
+5. Put the JSON file in your Houdini application folder under
+   `houdini/config/NodeShapes` and restart Houdini. If you don't see the
+   shape in the node editor, please [Report an Issue][1] and attach your
+   input SVG and output JSON file.
 
-  With SVGFILE you must specify an SVG file that contains the following
-  elements from which a Houdini Nodeshape can be generated:
+[0]: https://stuff.niklasrosenstein.com/houdini-nodeshape-converter
+[1]: https://github.com/NiklasRosenstein/houdini-nodeshape-converter/issues
 
-  * <path id="outline"/>
-  * <path id="outputs"/>
-  * <path id="inputs"/>
-  * <path id="flag0"/>
-  * <path id="flag1"/>
-  * <path id="flag2"/>
-  * <path id="flag3"/>
-  * <rect id="icon"/>
+## Deployment
 
-  The INPUTDIM must be of the format `WxH` where W and H specify the width
-  and height of the input SVG file. If the parameter is omitted, the
-  bounding box of all paths in the SVG file is used instead to normalize the
-  shape size to 0..1 range.
-
-  Outputs the JSON Nodeshape to stdout.
-
-Options:
-  -n, --name TEXT              Name of the shape in the JSON file. Default:
-                               SVGFILE basename
-  -s, --cubic-samples INTEGER  Number of samples for cubic curves. Default: 10
-  --help                       Show this message and exit.
-```
-
-## Instructions
-
-Export an SVG file with your favorite vector graphics application. In the
-example below, I use **Affinity Designer**. Create paths with the following
-names (the coloring is optional):
-
-<table>
-  <tr>
-    <td>
-      <img src="https://image.ibb.co/kFW30v/2017_05_31_23_01_10_Affinity_Designer.png">
-    </td>
-    <td>
-      <ul>
-        <li>outputs</li>
-        <li>inputs</li>
-        <li>icon [rectangle]</li>
-        <li>flag0</li>
-        <li>flag1</li>
-        <li>flag2</li>
-        <li>flag3</li>
-        <li>outline</li>
-      </ul>
-    </td>
-  </tr>
-</table>
-
-Then export the vector graphics as SVG file. It is important that the SVG
-path preserves the path names as XML `id` attributes. Also, all path
-coordinates should be absolute, that is why I chose "print" as the export
-mode, since "export" can generate paths inside a transform node.
-
-<p align="center"><img src="http://i.imgur.com/clRCQ84.png"></p>
-
-Pass this SVG file into `houdini-nodeshape-converter`. You can pipe the
-output into a JSON file and copy that into your Houdini Nodeshape folder.
-
-    $ houdini-nodeshape-converter myshape.svg
-    {
-      "icon": [
-        ...
+- Make sure you specify a `SECRET_KEY` configuration value in the Flask app

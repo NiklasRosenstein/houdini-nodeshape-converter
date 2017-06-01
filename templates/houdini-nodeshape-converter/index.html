@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/kube/6.5.2/css/kube.min.css">
+    <style>
+      html {
+        padding: 1em;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+      a.shape-preview {
+        font-size: 80%;
+        text-decoration: none;
+        background-color: #eee;
+        display: inline-block;
+        padding: .5em;
+        border: 1px solid gray;
+      }
+      a.shape-preview img {
+        width: 128px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="row">
+      <div class="col col-12">
+        <h1>Houdini Nodeshape Converter</h1>
+        <p align="center"><img src="http://i.imgur.com/VWO2QFG.jpg"></p>
+      </div>
+      <div class="col col-12">
+        {% from "houdini-nodeshape-converter/formhelpers.html" import render_field %}
+        <form method=post enctype="multipart/form-data">
+          {{ form.csrf_token }}
+          <table>
+            {{ render_field(form.name) }}
+            {{ render_field(form.xres) }}
+            {{ render_field(form.yres) }}
+            {{ render_field(form.svg_file) }}
+          </table>
+          <p><input type=submit value=Convert>
+        </form>
+      </div>
+      {% if shapes %}
+      <div class="col col-12">
+        <h2>Last {{ shapes|length }} converted shapes:</h2>
+        {% for shape in shapes %}
+        <a class="shape-preview" href="{{ url_for('houdini_nodeshape_converter.shape_json', shape=shape) }}">
+          <p align="center">{{ shape }}</p>
+          <img src="{{ url_for('houdini_nodeshape_converter.shape_svg', shape=shape) }}">
+        </a>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+  </body>
+</html>
