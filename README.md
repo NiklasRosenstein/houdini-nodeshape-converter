@@ -4,8 +4,13 @@
 
 ## Installation
 
+Via Node.py and NPPM:
+
     $ nppm install -g git+https://github.com/NiklasRosenstein/houdini-nodeshape-converter.git
-    $ houdini-nodeshape-converter
+
+Via Pip:
+
+    $ pip install git+https://github.com/NiklasRosenstein/houdini-nodeshape-converter.git
 
 ## Synopsis
 
