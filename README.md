@@ -1,34 +1,52 @@
-<p align="center"><img src="http://i.imgur.com/VWO2QFG.jpg"></p>
-<h1 align="center"><a href="https://stuff.niklasrosenstein.com/houdini-nodeshape-converter">Houdini NodeShape Converter</a></h1>
-<p align="center">Convert SVG paths to Houdini JSON nodeshapes.</p>
+<h1 align="center">Houdini NodeShape Converter</h1>
+<p align="center">Convert SVG to Houdini NodeShape JSON files.</p>
 
   [0]: https://stuff.niklasrosenstein.com/houdini-nodeshape-converter
 
-## Creating a Houdini NodeShape
+A [Node.py] application that uses [Flask] and [Flask-RESTful] to provide
+a simple API to convert SVG to Houdini NodeShape JSON files. It allows
+cross-origin access by default. The API is described below.
 
-1. Use your favorite vector graphics application (eg. Affinity Designer, Adobe Illustrator, Inkscape)  
-   *Note: That application must support SVG export that preserves layer names and
-   absolute coordinates.*
+  [Node.py]: https://nodepy.org
+  [Flask]: http://flask.pocoo.org/
+  [Flask-RESTful]: https://flask-restful.readthedocs.io/
 
-2. Create your shape and make sure the layer names are correct (see image below).
+There is also a command-line tool that can be installed via
 
-   ![](https://image.ibb.co/kFW30v/2017_05_31_23_01_10_Affinity_Designer.png)
+    $ nppm install -g git+https://github.com/NiklasRosenstein/houdini-nodeshape-converter.git
+    $ houdini-nodeshape-converter --help
 
-3. Save the file in SVG format (eg. in "for web" mode which reduces the
-   complexity of the file and converts relative to absolute coordinates).
+To embedd the API in your flask Application, use
 
-4. Go to the [Houdini Nodeshape Converter][0] website and paste the content
-   of the exported SVG file and press "Convert". It will automatically download
-   the generated JSON file.
+```python
+import flask
+import {make_api} from '@NiklasRosenstein/houdini-nodeshape-converter'
 
-5. Put the JSON file in your Houdini application folder under
-   `houdini/config/NodeShapes` and restart Houdini. If you don't see the
-   shape in the node editor, please [Report an Issue][1] and attach your
-   input SVG and output JSON file.
+app = flask.Flask(__name__)
+make_api(app, url_prefix='/houdini-nodeshape-converter/')
+```
 
-[0]: https://stuff.niklasrosenstein.com/houdini-nodeshape-converter
-[1]: https://github.com/NiklasRosenstein/houdini-nodeshape-converter/issues
+## Api
 
-## Deployment
+### POST `/`
 
-- Make sure you specify a `SECRET_KEY` configuration value in the Flask app
+__Parameters__
+
+* `name`: The name of the created shape. This name will be contained in the
+  resulting JSON object. If not specified, the file's name is used.
+* `xres`: X resolution of the SVG image. If omitted, will be determined from
+  the bounding box of all paths that are converted into the Houdini NodeShape.
+* `yres`: See `xres`
+* `file`: An SVG image file that must contain all elements necessary to
+  generate a Houdini NodeShape.
+
+__Returns__
+
+* `status`: `"ok"`
+* `shape`: A string formatted as JSON data of the generated Houdini
+  NodeShape file.
+* `name`: The name that was specified via the `name` parameter. If the
+  parameter was omitted, the name of the uploaded file will be here.
+* `id`: The shape will be saved to a storage location on the server for
+  future extension where we may want to display the shapes that have
+  already been created.
