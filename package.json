@@ -4,7 +4,7 @@
   "description": "Convert SVG paths to Houdini JSON nodeshapes.",
   "author": "Niklas Rosenstein <rosensteinniklas@gmail.com>",
   "license": "MIT",
-  "main": "blueprint.py",
+  "main": "api.py",
   "bin": {
     "houdini-nodeshape-converter": "convert.py"
   },
@@ -15,8 +15,6 @@
   "python-dependencies": {
     "Flask": ">=0.12",
     "Flask-RESTful": ">=0.3.6",
-    "Flask-WTF": ">=0.14.2",
-    "WTForms": ">=2.1",
     "click": ">=6.7",
     "numpy": ">=1.11.2",
     "svgpathtools": ">=1.3.1",

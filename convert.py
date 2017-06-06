@@ -99,7 +99,7 @@ def convert(fp, inputdim=None, name=None, cubic_samples=10):
     path[:] = [(p - offset) * scalar for p in path]
 
   # Generate the output JSON.
-  data = {
+  return {
     'name': name,
     'flags': {
       '0': { 'outline': ctuples(results['flag0']) },
@@ -112,7 +112,6 @@ def convert(fp, inputdim=None, name=None, cubic_samples=10):
     'outputs': ctuples(results['outputs'], 0.0),
     'icon': ctuples(results['icon'])
   }
-  return json.dumps(data, indent=2, sort_keys=True)
 
 
 @click.command()
@@ -160,7 +159,8 @@ def main(ctx, svgfile, inputdim, name, cubic_samples):
       ctx.fail('invalid INPUTDIM: {!r}'.format(inputdim))
 
   with open(svgfile) as fp:
-    print(convert(fp, inputdim, name, cubic_samples))
+    data = convert(fp, inputdim, name, cubic_samples)
+    print(json.dumps(data, indent=2, sort_keys=True))
 
 
 if ('require' in globals() and require.main == module) or __name__ == '__main__':
