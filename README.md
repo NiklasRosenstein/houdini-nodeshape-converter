@@ -26,6 +26,10 @@ app = flask.Flask(__name__)
 make_api(app, url_prefix='/houdini-nodeshape-converter/')
 ```
 
+## Example Form
+
+![](http://i.imgur.com/1znnsnh.png)
+
 ## Api
 
 ### POST `/`
