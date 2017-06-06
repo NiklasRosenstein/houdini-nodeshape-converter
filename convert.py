@@ -59,9 +59,9 @@ def convert(fp, inputdim=None, name=None, cubic_samples=10):
   paths = doc.getElementsByTagName('path')
   rects = doc.getElementsByTagName('rect')
   if len(paths) != 7:
-    ctx.fail('expected 7 <path/>, got {}'.format(len(paths)))
+    raise ValueError('expected 7 <path/>, got {}'.format(len(paths)))
   if len(rects) != 1:
-    ctx.fail('expected 1 <rect/>, got {}'.format(len(rects)))
+    raise ValueError('expected 1 <rect/>, got {}'.format(len(rects)))
 
   # Sample all paths.
   results = {}
@@ -159,7 +159,10 @@ def main(ctx, svgfile, inputdim, name, cubic_samples):
       ctx.fail('invalid INPUTDIM: {!r}'.format(inputdim))
 
   with open(svgfile) as fp:
-    data = convert(fp, inputdim, name, cubic_samples)
+    try:
+      data = convert(fp, inputdim, name, cubic_samples)
+    except ValueError as exc:
+      ctx.fail(str(exc))
     print(json.dumps(data, indent=2, sort_keys=True))
 
 
