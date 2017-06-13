@@ -54,10 +54,6 @@ __Parameters__
 __Returns__
 
 * `status`: `"ok"`
-* `shape`: A string formatted as JSON data of the generated Houdini
-  NodeShape file.
 * `name`: The name that was specified via the `name` parameter. If the
   parameter was omitted, the name of the uploaded file will be here.
-* `id`: The shape will be saved to a storage location on the server for
-  future extension where we may want to display the shapes that have
-  already been created.
+* `id`: The ID of the shape. Use the **GET `/`** API to download the JSON file.

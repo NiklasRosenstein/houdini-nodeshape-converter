@@ -53,13 +53,15 @@ class HoudiniNodeshapeConverter(Resource):
 
   get_parser = reqparse.RequestParser()
   get_parser.add_argument('shape_id', required=True)
+  get_parser.add_argument('filename', required=False)
 
   def get(self):
     args = self.get_parser.parse_args()
     if not args.shape_id:
       abort(404, message='No shape ID')
     try:
-      return flask.send_from_directory(storage_dir(), args.shape_id + '.json', as_attachment=True)
+      return flask.send_from_directory(storage_dir(), args.shape_id + '.json',
+        as_attachment=True, attachment_filename=(args.filename or None))
     except werkzeug.exceptions.NotFound as exc:
       abort(404, message='Shape does not exist.')
 
@@ -93,7 +95,7 @@ class HoudiniNodeshapeConverter(Resource):
     with open(filename + '.json', 'w') as fp:
       fp.write(data)
 
-    return {'status': 'ok', 'name': args.name, 'shape': data, 'id': basename}
+    return {'status': 'ok', 'name': args.name, 'id': basename}
 
 
 def json_representation(data, code, headers=None):
