@@ -28,6 +28,7 @@ import flask
 import io
 import json
 import os
+import werkzeug
 import {convert} from './convert'
 
 
@@ -49,6 +50,18 @@ class HoudiniNodeshapeConverter(Resource):
   parser.add_argument('xres', type=int_or_empty, required=False)
   parser.add_argument('yres', type=int_or_empty, required=False)
   parser.add_argument('file', type=FileStorage, location='files')
+
+  get_parser = reqparse.RequestParser()
+  get_parser.add_argument('shape_id', required=True)
+
+  def get(self):
+    args = self.get_parser.parse_args()
+    if not args.shape_id:
+      abort(404, message='No shape ID')
+    try:
+      return flask.send_from_directory(storage_dir(), args.shape_id + '.json', as_attachment=True)
+    except werkzeug.exceptions.NotFound as exc:
+      abort(404, message='Shape does not exist.')
 
   def post(self):
     args = self.parser.parse_args()
@@ -99,6 +112,7 @@ def make_api(app, url_prefix='/'):
 
 def main():
   app = flask.Flask(__name__)
+  app.config['ERROR_404_HELP'] = False
   make_api(app)
   app.run(debug=True)
 

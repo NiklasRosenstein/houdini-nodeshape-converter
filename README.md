@@ -32,6 +32,13 @@ make_api(app, url_prefix='/houdini-nodeshape-converter/')
 
 ## Api
 
+### GET `/`
+
+__Parameters__
+
+* `?shape_id=`: The ID of the shape to download the JSON file for. The shape
+  ID is returned after converting an SVG file with the **POST `/`** API.
+
 ### POST `/`
 
 __Parameters__
