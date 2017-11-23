@@ -1,5 +1,5 @@
+.nodepy/
 dist/
-nodepy_modules/
 venv/
 *.egg-info/
 _storage/

@@ -1,26 +1,28 @@
 {
   "name": "@NiklasRosenstein/houdini-nodeshape-converter",
   "version": "0.0.1",
+  "publish": false,
   "description": "Convert SVG paths to Houdini JSON nodeshapes.",
-  "author": "Niklas Rosenstein <rosensteinniklas@gmail.com>",
   "license": "MIT",
   "main": "api.py",
+  "authors": [
+    "rosensteinniklas@gmail.com>"
+  ],
   "bin": {
     "houdini-nodeshape-converter": "convert.py"
   },
   "extensions": [
-    "!require-import-syntax",
-    "@nodepy/werkzeug-reloader-patch"
+    "werkzeug-reloader-patch"
   ],
-  "python-dependencies": {
+  "dependencies": {
+    "werkzeug-reloader-patch": "git+http://github.com/nodepy/werkzeug-reloader-patch@v0.0.6"
+  },
+  "pip_dependencies": {
     "Flask": ">=0.12",
     "Flask-RESTful": ">=0.3.6",
     "click": ">=6.7",
     "numpy": ">=1.11.2",
     "svgpathtools": ">=1.3.1",
     "svgwrite": ">=1.1.11"
-  },
-  "dependencies": {
-    "@nodepy/werkzeug-reloader-patch": "~0.0.3"
   }
 }
