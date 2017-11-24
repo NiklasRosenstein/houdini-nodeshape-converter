@@ -1,17 +1,17 @@
 ## Houdini NodeShape Converter
 
+  [Node.py]: https://nodepy.org
+  [Flask]: http://flask.pocoo.org/
+
 A small [Node.py] + [Flask] application that provides a simple REST-Api to
 convert SVG files to Houdini NodeShape JSON files. To allow using the Api
 from JavaScript in the browser, it allows cross-origin requests by default.
 
-An instance of this Api is deployed on Azure under http://houdini-nodeshape-converter.herokuapp.com/.  
-This form can be found at https://www.niklasrosenstein.com/post/2017-06-13-houdini-nodeshape-converter/.
-
-  [Node.py]: https://nodepy.org
-  [Flask]: http://flask.pocoo.org/
-  [Flask-RESTful]: https://flask-restful.readthedocs.io/
-
 ![](https://i.imgur.com/1znnsnh.png)
+
+> * This form can be found at https://www.niklasrosenstein.com/post/2017-06-13-houdini-nodeshape-converter/
+> * An instance of this Api is deployed on Heroku under https://houdini-nodeshape-converter.herokuapp.com/
+> * You can find the Heroku deployment in the `heroku` branch
 
 ## REST-Api
 
