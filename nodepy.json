@@ -11,6 +11,10 @@
   "bin": {
     "houdini-nodeshape-converter": "convert.py"
   },
+  "include": [
+    "api.py",
+    "convert.py"
+  ],
   "extensions": [
     "werkzeug-reloader-patch"
   ],
