@@ -1,0 +1,9 @@
+[submodule "vendor/houdini-nodeshape-convert"]
+	path = vendor/houdini-nodeshape-converter
+	url = https://github.com/NiklasRosenstein/houdini-nodeshape-converter.git
+[submodule "vendor/nodepy"]
+	path = vendor/nodepy
+	url = https://github.com/nodepy/nodepy.git
+[submodule "vendor/nodepy-pm"]
+	path = vendor/nodepy-pm
+	url = https://github.com/nodepy/nodepy-pm.git
