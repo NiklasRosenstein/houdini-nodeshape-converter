@@ -34,7 +34,7 @@ import {convert} from './convert'
 
 def storage_dir():
   return app.config.get('HOUDINI_NODESHAPE_CONVERTER_STOREAGEDIR',
-    os.path.join(__directory__, '_storage'))
+    os.path.join(str(module.directory), '_storage'))
 
 
 def int_or_empty(value):
